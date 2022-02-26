@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- sus trebuie sa fie: android:layout_height="wrap_content" -->
+    <!-- https://stackoverflow.com/questions/35817610/large-gap-forms-between-recyclerview-items-when-scrolling-down -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1sp"
+        android:background="@drawable/border_primarydark_medium_shape"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1sp"
+            android:layout_weight="0.25"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvmachine_machineid"
+                android:gravity="center|start"
+                android:textSize="14sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/tvmachine_areaname"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center|start"
+                android:textSize="11sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1sp"
+            android:layout_weight="0.25"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvmachine_corderid"
+                android:gravity="center|start"
+                android:textSize="14sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/tvmachine_stylename"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center|start"
+                android:textSize="11sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1sp"
+            android:layout_weight="0.25"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvmachine_bundleid"
+                android:gravity="center|start"
+                android:textSize="14sp"
+                android:layout_margin="1sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/tvmachine_operationname"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center|start"
+                android:textSize="11sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1sp"
+            android:layout_weight="0.25"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvmachine_size"
+                android:gravity="center|start"
+                android:textSize="14sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/tvmachine_color"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center|start"
+                android:textSize="11sp"
+                android:layout_margin="1sp"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

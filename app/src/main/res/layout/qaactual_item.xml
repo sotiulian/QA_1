@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1sp"
+        android:background="@drawable/border_primarydark_medium_shape"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1sp"
+            android:layout_weight="0.4"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1sp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvpiecespercheck"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"/>
+
+                <TextView
+                    android:id="@+id/tvacceptablelevelofdefects"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.33"
+                    android:gravity="center|start"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1sp"
+                android:layout_weight="0.5"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/button_newtarget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1sp"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/new_task"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorLight"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="1sp"
+            android:layout_weight="0.6"
+            android:background="@drawable/border_primarydark_thin_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1sp"
+                android:layout_weight="0.8"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvbalance"
+                    android:layout_width="match_parent"
+                    android:gravity="center|start"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvactualdefectsfound"
+                    android:layout_width="match_parent"
+                    android:gravity="center|start"
+                    android:textSize="28sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1sp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/border_primarydark_thin_shape"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/button_exit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1sp"
+                        android:background="@color/colorPrimary"
+                        android:text="@string/exit"
+                        android:textStyle="bold"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorLight"
+                        android:layout_gravity="center"
+                        />
+
+                    <Button
+                        android:id="@+id/button_savedefects"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1sp"
+                        android:background="@color/colorPrimary"
+                        android:text="@string/save"
+                        android:textStyle="bold"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorLight"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1sp"
+                android:layout_weight="0.2"
+
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/button_plus"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="1dp"
+                    android:background="@color/colorRed"
+                    android:text="@string/plus_sign"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorLight" />
+
+                <Button
+                    android:id="@+id/button_minus"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="1dp"
+                    android:background="@color/colorRed"
+                    android:text="@string/minus_sign"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorLight" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- sus trebuie sa fie: android:layout_height="wrap_content" -->
+    <!-- https://stackoverflow.com/questions/35817610/large-gap-forms-between-recyclerview-items-when-scrolling-down -->
+
+    <!-- https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:background="@drawable/border_primarydark_medium_shape"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvoperatorid"
+            android:gravity="center|start"
+            android:textSize="14sp"
+            android:layout_margin="5sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvoperatorname"
+            android:layout_width="match_parent"
+            android:gravity="center|start"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:layout_margin="5sp"
+            android:textColor="@android:color/black"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- sus trebuie sa fie: android:layout_height="wrap_content" -->
+    <!-- https://stackoverflow.com/questions/35817610/large-gap-forms-between-recyclerview-items-when-scrolling-down -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1sp"
+        android:background="@drawable/border_primarydark_medium_shape"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvooscoringtitle"
+            android:gravity="center|start"
+            android:textSize="14sp"
+            android:layout_margin="1sp"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:text="@string/scoring_by_operation"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="1sp"
+            android:layout_weight="0.66"
+            android:background="@drawable/border_primarydark_medium_shape"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1sp"
+                android:layout_weight="0.33"
+
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvoototalpiecestitle"
+                    android:gravity="center|start"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    />
+
+                <TextView
+                    android:id="@+id/tvoototalpieces"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center|start"
+                    android:textSize="11sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="0dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1sp"
+                android:layout_weight="0.33"
+
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvoodeffectpiecestitle"
+                    android:gravity="center|start"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    />
+
+                <TextView
+                    android:id="@+id/tvoodeffectpieces"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center|start"
+                    android:textSize="11sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="0dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1sp"
+                android:layout_weight="0.33"
+
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvooprocenttitle"
+                    android:gravity="center|start"
+                    android:textSize="14sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"/>
+
+                <TextView
+                    android:id="@+id/tvooprocent"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center|start"
+                    android:textSize="11sp"
+                    android:layout_margin="1sp"
+                    android:textColor="@android:color/black"
+                    android:layout_height="0dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
