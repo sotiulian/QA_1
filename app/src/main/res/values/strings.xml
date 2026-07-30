@@ -44,4 +44,12 @@
     <string name="_192_168_11_3">192.168.11.3</string>
     <string name="scoring_general">Scoring general</string>
     <string name="scoring_by_operation">Scoring by Operation</string>
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_message">Version %1$s is available.\nDo you want to update the application?</string>
+    <string name="update_btn_update">Update</string>
+    <string name="update_btn_later">Later</string>
+    <string name="update_downloading_title">Updating to version %1$s</string>
+    <string name="update_downloading_message">Downloading update, please wait...</string>
+    <string name="update_install_permission">Enable \'Install unknown apps\' for QA, then restart the application.</string>
+    <string name="update_download_error">Download error: %1$s</string>
 </resources>

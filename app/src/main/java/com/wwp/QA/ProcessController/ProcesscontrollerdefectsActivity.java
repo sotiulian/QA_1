@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProcesscontrollerdefectsActivity extends AppCompatActivity implements ProcesscontrollerClickOnArticle {
 
@@ -494,38 +496,33 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
     // then the web API address is get from room database the API is called
     private void setDataAroundMachineID(){
 
-        class GetDataAroundMachineID extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
+            handler.post(() -> {
 
                 PostJSON postJSON = prepareMachinePostJSON("GETDATAAROUNDMACHINE"
                         , machineFilter
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetDataAroundMachineID.onPostExecute()");
                 Log.e("PCU", "webaddress -> " + webaddresses);
 
                 // injects my ProcesscontrollerViewModel into newsViewModel property
-                newsMachineViewModel = ViewModelProviders
-                        .of(ProcesscontrollerdefectsActivity.this)
+                newsMachineViewModel = new ViewModelProvider(ProcesscontrollerdefectsActivity.this)
                         .get(MachineViewModel.class);
 
                 // init the ViewModel by calling URL obtained from webaddresses.getWebaddress() and retrieve the response obtained from API into MutableLiveData into PCViewModel
@@ -597,14 +594,8 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                                 ).show();
                             }
                         });
-
-
-
-            }
-        }
-
-        GetDataAroundMachineID gt = new GetDataAroundMachineID();
-        gt.execute();
+            });
+        });
 
     }
 
@@ -641,28 +632,25 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
 
     private void getScoring(String machineID){
 
-        class GetDataAroundTask extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
+            handler.post(() -> {
 
                 // here must be the code for saving qa_actual
-                Log.e(this.getClass().getSimpleName(), "machineID ->" + machineID);
+                Log.e("GetDataAroundTask", "machineID ->" + machineID);
 
                 ScoringFilter scoringFilter = new ScoringFilter(machineID);
 
@@ -672,15 +660,12 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetDataAroundTask.onPostExecute()");
                 Log.e("PCD", "webaddress -> " + webaddresses.getWebaddress());
                 Log.e("PCD", "postJSON -> " + postJSON.toString());
 
                 // injects my ProcesscontrollerViewModel into newsViewModel property
-                newsScoringViewModel = ViewModelProviders
-                        .of(ProcesscontrollerdefectsActivity.this)
+                newsScoringViewModel = new ViewModelProvider(ProcesscontrollerdefectsActivity.this)
                         .get(ScoringViewModel.class);
 
                 // init the ViewModel by calling URL obtained from webaddresses.getWebaddress() and retrieve the response obtained from API into MutableLiveData into PCViewModel
@@ -749,13 +734,8 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                                         ).show();
                                     }
                                 });
-
-
-            }
-        }
-
-        GetDataAroundTask gt = new GetDataAroundTask();
-        gt.execute();
+            });
+        });
 
     }
 
@@ -793,28 +773,25 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
 
     private void saveDataQAActual(){
 
-        class GetDataAroundTask extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
+            handler.post(() -> {
 
                 // here must be the code for saving qa_actual
-                Log.e(this.getClass().getSimpleName(), "qa_target.cheie ->" + qaCheckViewModel.getQacheck().getValue().getCheqa_target());
+                Log.e("GetDataAroundTask", "qa_target.cheie ->" + qaCheckViewModel.getQacheck().getValue().getCheqa_target());
 
                 qaFilter.setCheqa_target(qaCheckViewModel.getQacheck().getValue().getCheqa_target());
                 Log.e("PCD", "cheqa_target -> " + qaFilter.getCheqa_target());
@@ -833,8 +810,6 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetDataAroundTask.onPostExecute()");
                 Log.e("PCD", "webaddress -> " + webaddresses.getWebaddress());
                 Log.e("PCD", "postJSON -> " + postJSON.toString());
@@ -852,12 +827,8 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
 
                 startActivity(new Intent(ProcesscontrollerdefectsActivity.this, ProcesscontrollerdefectsActivity.class)
                         .putExtra("processcontrollerfilter", processcontrollerFilter));
-
-            }
-        }
-
-        GetDataAroundTask gt = new GetDataAroundTask();
-        gt.execute();
+            });
+        });
 
     }
 
@@ -892,28 +863,25 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
 
     private void insertNewQATarget(){
 
-        class GetDataAroundTask extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
+            handler.post(() -> {
 
                 // here must be the code for saving qa_actual
-                Log.e(this.getClass().getSimpleName(), "qa_target.cheie ->" + processcontrollerFilter.getMachineid());
+                Log.e("GetDataAroundTask", "qa_target.cheie ->" + processcontrollerFilter.getMachineid());
 
                 MachineArticles machineArticles = new MachineArticles(processcontrollerFilter.getMachineid());
 
@@ -934,8 +902,6 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetDataAroundTask.onPostExecute()");
                 Log.e("PCD", "webaddress -> " + webaddresses.getWebaddress());
                 Log.e("PCD", "postJSON -> " + postJSON.toString());
@@ -953,12 +919,8 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                 finish();
                 startActivity(new Intent(ProcesscontrollerdefectsActivity.this, ProcesscontrollerdefectsActivity.class)
                         .putExtra("processcontrollerfilter", processcontrollerFilter));
-
-            }
-        }
-
-        GetDataAroundTask gt = new GetDataAroundTask();
-        gt.execute();
+            });
+        });
 
     }
 
@@ -968,25 +930,22 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
     // then the web API address is get from room database the API is called
     private void setArticleArrayList(){
 
-        class GetTasks extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
+            handler.post(() -> {
 
                 processcontrollerFilter.setPmsoperatorname(articleMachineArrayList.get(articleMachineArrayList.size()-1).getPmsoperatorname());
                 Log.e("PCD", "setChepms_operators -> " + processcontrollerFilter.getPmsoperatorname());
@@ -999,15 +958,12 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetTask.onPostExecute()");
                 Log.e("PCU", "webaddress -> " + webaddresses.getWebaddress());
                 Log.e("PCU", "postJSON -> " + new Gson().toJson(postJSON));
 
                 // injects my ProcesscontrollerViewModel into newsViewModel property
-                newsProcesscontrollerViewModel = ViewModelProviders
-                        .of(ProcesscontrollerdefectsActivity.this)
+                newsProcesscontrollerViewModel = new ViewModelProvider(ProcesscontrollerdefectsActivity.this)
                         .get(ProcesscontrollerViewModel.class);
 
                 // init the ViewModel by calling URL obtained from webaddresses.getWebaddress() and retrieve the response obtained from API into MutableLiveData into PCViewModel
@@ -1064,14 +1020,8 @@ public class ProcesscontrollerdefectsActivity extends AppCompatActivity implemen
                                 ).show();
                             }
                         });
-
-
-
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
+            });
+        });
 
     }
 

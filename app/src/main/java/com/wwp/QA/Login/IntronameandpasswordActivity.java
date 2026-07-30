@@ -3,8 +3,9 @@ package com.wwp.QA.Login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,8 @@ import com.wwp.QA.Utils.PostJSON;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +91,7 @@ public class IntronameandpasswordActivity extends AppCompatActivity {
 
     void loadName(LoginnameEntity loginnameEntity){
         editTextName.setText(loginnameEntity.getLoginname());
-        editTextName.setText("");
+        //editTextName.setText("");
     }
 
 
@@ -115,33 +118,20 @@ public class IntronameandpasswordActivity extends AppCompatActivity {
     // then the web API address is get from room database the API is called
     private void interogateAPIforQAOperator(String loginname){
 
-        class GetActiveWebadressTasks extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
-                SysadminEntity sysadminEntity = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress();
+            // obtain webaddress set into sysadmin room database to call it for article array list
+            SysadminEntity sysadminEntity = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress();
 
-                return sysadminEntity; // goes into onPostExecute method as parameter
-            }
-
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
-                super.onPostExecute(webaddresses);
-
-                checkLoginRecordFromDatase(webaddresses.getWebaddress(), loginname);
-
-            }
-        }
-
-        GetActiveWebadressTasks gt = new GetActiveWebadressTasks();
-        gt.execute();
+            handler.post(() -> checkLoginRecordFromDatase(sysadminEntity.getWebaddress(), loginname));
+        });
 
     }
 
@@ -150,33 +140,20 @@ public class IntronameandpasswordActivity extends AppCompatActivity {
     // then the web API address is get from room database the API is called
     private void loginAPIforQAOperator(String loginname){
 
-        class GetActiveWebadressTasks extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
-                SysadminEntity sysadminEntity = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress();
+            // obtain webaddress set into sysadmin room database to call it for article array list
+            SysadminEntity sysadminEntity = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress();
 
-                return sysadminEntity; // goes into onPostExecute method as parameter
-            }
-
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
-
-                super.onPostExecute(webaddresses);
-
-                doLoginOperatorToday(webaddresses.getWebaddress(), loginname);
-
-            }
-        }
-
-        GetActiveWebadressTasks gt = new GetActiveWebadressTasks();
-        gt.execute();
+            handler.post(() -> doLoginOperatorToday(sysadminEntity.getWebaddress(), loginname));
+        });
 
     }
 

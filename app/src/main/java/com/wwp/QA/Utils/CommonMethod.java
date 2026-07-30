@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -20,9 +21,16 @@ public class CommonMethod {
             ConnectivityManager connectivityManager
                     = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if (connectivityManager == null) return false;
 
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+            Network network = connectivityManager.getActiveNetwork();
+            if (network == null) return false;
+
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+
+            return capabilities != null
+                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
         }
 
         public static void showAlert(String message, Activity context) {

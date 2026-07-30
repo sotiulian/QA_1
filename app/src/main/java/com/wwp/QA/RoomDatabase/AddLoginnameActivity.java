@@ -3,14 +3,18 @@ package com.wwp.QA.RoomDatabase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wwp.QA.R;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AddLoginnameActivity extends AppCompatActivity {
 
@@ -45,39 +49,30 @@ public class AddLoginnameActivity extends AppCompatActivity {
         }
 
 
-        class SaveLoginnameAsyncTask extends AsyncTask<Void, Void, Void> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Void doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                // creating a LoginnameEntity
-                LoginnameEntity loginnameEntity = new LoginnameEntity();
+            // creating a LoginnameEntity
+            LoginnameEntity loginnameEntity = new LoginnameEntity();
 
-                loginnameEntity.setLoginname(sLoginname);
+            loginnameEntity.setLoginname(sLoginname);
 
 
-                // adding LoginnameEntity to database
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .loginnameDao()
-                        .insert(loginnameEntity);
+            // adding LoginnameEntity to database
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                    .loginnameDao()
+                    .insert(loginnameEntity);
 
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
+            handler.post(() -> {
                 finish();
 
                 startActivity(new Intent(getApplicationContext(), LoginnamelistActivity.class));
 
                 Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        SaveLoginnameAsyncTask st = new SaveLoginnameAsyncTask();
-        st.execute();
+            });
+        });
 
     }
 

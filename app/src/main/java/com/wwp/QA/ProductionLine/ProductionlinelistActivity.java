@@ -3,14 +3,15 @@ package com.wwp.QA.ProductionLine;
 import static com.wwp.QA.Utils.Utils.ObjectToMap;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import com.wwp.QA.Utils.PostJSON;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProductionlinelistActivity extends AppCompatActivity {
 
@@ -117,39 +120,33 @@ public class ProductionlinelistActivity extends AppCompatActivity {
     // then the web API address is get from room database the API is called
     private void setArticleArrayList(){
 
-        class GetTasks extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                Log.e("PLU", "setArticleArrayList GetTasks.doInBackground()");
+            Log.e("PLU", "setArticleArrayList GetTasks.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                SysadminEntity activewebadress = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress();
-                return activewebadress; // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress();
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
+            handler.post(() -> {
 
                 PostJSON postJSON = preparePostJSON("GETLINES"
                         , productionlineFilter
                         , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetTasks.onPostExecute()");
                 Log.e("PLU", "webaddress -> " + webaddresses.getWebaddress());
 
                 // injects my ProcesscontrollerViewModel into newsViewModel property
-                newsViewModel = ViewModelProviders
-                        .of(ProductionlinelistActivity.this)
+                newsViewModel = new ViewModelProvider(ProductionlinelistActivity.this)
                         .get(ProductionlineViewModel.class);
 
                 // init the ViewModel by calling URL obtained from webaddresses.getWebaddress() and retrieve the response obtained from API into MutableLiveData into PCViewModel
@@ -188,14 +185,8 @@ public class ProductionlinelistActivity extends AppCompatActivity {
                                 ).show();
                             }
                         });
-
-
-
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
+            });
+        });
 
     }
 

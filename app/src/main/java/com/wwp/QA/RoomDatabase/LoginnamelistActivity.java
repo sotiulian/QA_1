@@ -5,8 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.wwp.QA.MainActivity;
 import com.wwp.QA.R;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginnamelistActivity extends AppCompatActivity {
 
@@ -56,32 +59,22 @@ public class LoginnamelistActivity extends AppCompatActivity {
 
     private void getLoginname(){
 
-        class GetTasks extends AsyncTask<Void, Void, List<LoginnameEntity>> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected List<LoginnameEntity> doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                List<LoginnameEntity> loginnameEntityList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .loginnameDao() // implements abstract method from LoginnameDao interface
-                        .getLoginname();
+            List<LoginnameEntity> loginnames = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .loginnameDao() // implements abstract method from LoginnameDao interface
+                    .getLoginname();
 
-                return loginnameEntityList; // goes into onPostExecute method as parameter
-            }
-
-            @Override
-            protected void onPostExecute(List<LoginnameEntity> loginnames) {
-
-                super.onPostExecute(loginnames);
-
+            handler.post(() -> {
                 LoginnamelistAdapter adapter = new LoginnamelistAdapter(LoginnamelistActivity.this, loginnames);
                 recyclerViewLA.setAdapter(adapter);
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
+            });
+        });
 
     }
 

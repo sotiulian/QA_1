@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blikoon.qrcodescanner.QrCodeActivity;
 import com.wwp.QA.MainActivity;
+import com.wwp.QA.QrScanActivity;
 import com.wwp.QA.ProductionLine.ProductionlineArticles;
 import com.wwp.QA.ProductionLine.ProductionlinelistActivity;
 import com.wwp.QA.ProductionOperator.ProductionoperatorArticles;
@@ -178,7 +178,7 @@ public class ProcesscontrollermainActivity extends AppCompatActivity {
 
                 // https://stackoverflow.com/questions/62671106/onactivityresult-method-is-deprecated-what-is-the-alternative
 
-                Intent intent = new Intent(ProcesscontrollermainActivity.this, QrCodeActivity.class);
+                Intent intent = new Intent(ProcesscontrollermainActivity.this, QrScanActivity.class);
                 qrActivityResultLauncher.launch(intent);
 
             }

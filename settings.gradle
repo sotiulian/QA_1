@@ -7,4 +7,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "QA"
-include ':app', ':qrcodescanner'
+include ':app'
+// ':qrcodescanner' (com.blikoon, Camera1/ZXing) inlocuit de CameraX + ML Kit direct in :app,
+// la fel ca in pms_3u354 si mm. Modulul ramane pe disc, neconstruit.

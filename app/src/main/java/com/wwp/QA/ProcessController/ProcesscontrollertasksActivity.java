@@ -5,20 +5,21 @@ import static com.wwp.QA.Utils.Utils.ObjectToMap;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.blikoon.qrcodescanner.QrCodeActivity;
+import com.wwp.QA.QrScanActivity;
 import com.wwp.QA.Utils.PostJSON;
 import com.wwp.QA.R;
 import com.wwp.QA.RoomDatabase.DatabaseClient;
@@ -27,6 +28,8 @@ import com.wwp.QA.RoomDatabase.SysadminEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // Process controller Unresolved All Articles
 public class ProcesscontrollertasksActivity extends AppCompatActivity implements ProcesscontrollerClickOnArticle {
@@ -88,7 +91,7 @@ public class ProcesscontrollertasksActivity extends AppCompatActivity implements
 //        startActivity(new Intent(ProcesscontrollertasksActivity.this, ProcesscontrollerdefectsActivity.class)
 //                .putExtra("processcontrollerfilter", processcontrollerFilter));
 
-        Intent intent = new Intent(ProcesscontrollertasksActivity.this, QrCodeActivity.class);
+        Intent intent = new Intent(ProcesscontrollertasksActivity.this, QrScanActivity.class);
         qrActivityResultLauncher.launch(intent);
 
     }
@@ -170,38 +173,33 @@ public class ProcesscontrollertasksActivity extends AppCompatActivity implements
     // then the web API address is get from room database the API is called
     private void setArticleArrayList(){
 
-        class GetTasks extends AsyncTask<Void, Void, SysadminEntity> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected SysadminEntity doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
+            //Log.e("PCU", "setArticleArrayList GetDataAroundTask.doInBackground()");
 
-                // obtain webaddress set into sysadmin room database to call it for article array list
+            // obtain webaddress set into sysadmin room database to call it for article array list
 
-                return DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getActivewebadress(); // goes into onPostExecute method as parameter
-            }
+            SysadminEntity webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getActivewebadress(); // goes into onPostExecute method as parameter
 
-            @Override
-            protected void onPostExecute(SysadminEntity webaddresses) {
+            handler.post(() -> {
 
                 PostJSON postJSON = preparePostJSON("TODAYTASKS"
                                                     , processcontrollerFilter
                                                     , ""
                 ); // POST parameters for URL call
 
-                super.onPostExecute(webaddresses);
-
                 //Log.e("PCU", "setArticleArrayList GetDataAroundTask.onPostExecute()");
                 Log.e("PCU", "webaddress -> " + webaddresses);
 
                 // injects my ProcesscontrollerViewModel into newsViewModel property
-                newsViewModel = ViewModelProviders
-                                      .of(ProcesscontrollertasksActivity.this)
+                newsViewModel = new ViewModelProvider(ProcesscontrollertasksActivity.this)
                                       .get(ProcesscontrollerViewModel.class);
 
                 // init the ViewModel by calling URL obtained from webaddresses.getWebaddress() and retrieve the response obtained from API into MutableLiveData into PCViewModel
@@ -240,14 +238,8 @@ public class ProcesscontrollertasksActivity extends AppCompatActivity implements
                         ).show();
                     }
                 });
-
-
-
-            }
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
+            });
+        });
 
     }
 

@@ -3,14 +3,18 @@ package com.wwp.QA.RoomDatabase;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wwp.QA.R;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AddSysadminActivity extends AppCompatActivity {
 
@@ -55,40 +59,31 @@ public class AddSysadminActivity extends AppCompatActivity {
         }
 
 
-        class SaveWebaddressAsyncTask extends AsyncTask<Void, Void, Void> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Void doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                // creating a SysadminEntity
-                SysadminEntity sysadminEntity = new SysadminEntity();
+            // creating a SysadminEntity
+            SysadminEntity sysadminEntity = new SysadminEntity();
 
-                sysadminEntity.setWebaddress(sWebaddress);
-                sysadminEntity.setDesc(sDesc);
-                sysadminEntity.setActive(sIsactive);
+            sysadminEntity.setWebaddress(sWebaddress);
+            sysadminEntity.setDesc(sDesc);
+            sysadminEntity.setActive(sIsactive);
 
-                // adding SysadminEntity to database
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .sysadminDao()
-                        .insert(sysadminEntity);
+            // adding SysadminEntity to database
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                    .sysadminDao()
+                    .insert(sysadminEntity);
 
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
+            handler.post(() -> {
                 finish();
 
                 startActivity(new Intent(getApplicationContext(), SysadminActivity.class));
 
                 Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        SaveWebaddressAsyncTask st = new SaveWebaddressAsyncTask();
-        st.execute();
+            });
+        });
 
     }
 

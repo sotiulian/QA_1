@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SysadminActivity extends AppCompatActivity {
 
@@ -55,33 +58,22 @@ public class SysadminActivity extends AppCompatActivity {
 
     private void getWebadresses(){
 
-        class GetTasks extends AsyncTask<Void, Void, List<SysadminEntity>> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected List<SysadminEntity> doInBackground(Void... voids) {
+        executor.execute(() -> {
 
-                List<SysadminEntity> sysadminEntityList = DatabaseClient
-                        .getInstance(getApplicationContext())
-                        .getAppDatabase()
-                        .sysadminDao()
-                        .getAll();
+            List<SysadminEntity> webaddresses = DatabaseClient
+                    .getInstance(getApplicationContext())
+                    .getAppDatabase()
+                    .sysadminDao()
+                    .getAll();
 
-                return sysadminEntityList; // goes into onPostExecute method as parameter
-            }
-
-            @Override
-            protected void onPostExecute(List<SysadminEntity> webaddresses) {
-
-                super.onPostExecute(webaddresses);
-
+            handler.post(() -> {
                 SysadminlistAdapter adapter = new SysadminlistAdapter(SysadminActivity.this, webaddresses);
                 recyclerView.setAdapter(adapter);
-            }
-
-        }
-
-        GetTasks gt = new GetTasks();
-        gt.execute();
+            });
+        });
 
     }
 

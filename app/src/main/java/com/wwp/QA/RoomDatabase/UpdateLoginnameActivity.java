@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wwp.QA.R;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class UpdateLoginnameActivity extends AppCompatActivity {
 
@@ -101,56 +105,43 @@ public class UpdateLoginnameActivity extends AppCompatActivity {
 
 
 
-        class UpdateTask extends AsyncTask<Void, Void, Void> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                loginnameEntity.setLoginname(sTask);
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .loginnameDao()
-                        .update(loginnameEntity); // call Dao method update with argument arrived here by Intent
-                return null;
-            }
+        executor.execute(() -> {
+            loginnameEntity.setLoginname(sTask);
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                    .loginnameDao()
+                    .update(loginnameEntity); // call Dao method update with argument arrived here by Intent
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            handler.post(() -> {
                 Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_LONG).show();
                 finish();
                 startActivity(new Intent(UpdateLoginnameActivity.this, LoginnamelistActivity.class));
-            }
-        }
-
-        UpdateTask ut = new UpdateTask();
-        ut.execute();
+            });
+        });
 
     }
 
     private void deleteTask(final LoginnameEntity loginnameEntity) {
-        class DeleteTask extends AsyncTask<Void, Void, Void> {
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .loginnameDao()
-                        .delete(loginnameEntity);
-                return null;
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+        executor.execute(() -> {
+            DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                    .loginnameDao()
+                    .delete(loginnameEntity);
+
+            handler.post(() -> {
                 Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_LONG).show();
 
                 finish();
 
                 startActivity(new Intent(UpdateLoginnameActivity.this, LoginnamelistActivity.class));
-            }
-        }
+            });
+        });
 
-        DeleteTask dt = new DeleteTask();
-        dt.execute();
+    }
 
-    }    
-    
 }

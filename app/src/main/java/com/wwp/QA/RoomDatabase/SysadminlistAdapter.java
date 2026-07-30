@@ -14,17 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wwp.QA.R;
 
 import java.util.List;
-
 public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapter.SysadminViewHolder> {
-
     private Context mCtx;
     private List<SysadminEntity> sysadminEntityList;
-
-    public SysadminlistAdapter(Context mCtx, List<SysadminEntity> sysadminEntityList){
+    public SysadminlistAdapter(Context mCtx, List<SysadminEntity> sysadminEntityList) {
         this.mCtx = mCtx;
         this.sysadminEntityList = sysadminEntityList;
     }
-
     @NonNull
     @Override
     public SysadminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,7 +29,6 @@ public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapte
 
         return new SysadminViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull SysadminViewHolder holder, int position) {
 
@@ -47,19 +42,13 @@ public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapte
         else
             holder.textViewStatus.setText("Not active");
     }
-
-
     @Override
     public int getItemCount() {
         return sysadminEntityList.size();
     }
-
-
-    class SysadminViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-
+    class SysadminViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView textViewStatus, textViewTask, textViewDesc, textViewFinishBy;
-
-        public SysadminViewHolder(View itemView){
+        public SysadminViewHolder(View itemView) {
 
             super(itemView);
 
@@ -71,7 +60,6 @@ public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapte
             itemView.setOnLongClickListener(this);
 
         }
-
         @Override
         public boolean onLongClick(View view) {
 
@@ -81,7 +69,7 @@ public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapte
 
             SysadminEntity sysadminEntity = sysadminEntityList.get(getAdapterPosition());
 
-            Log.e("SA","You long clicked on -> " + sysadminEntity.getWebaddress());
+            Log.e("SA", "You long clicked on -> " + sysadminEntity.getWebaddress());
 
             Intent intent = new Intent(mCtx, UpdateSysadminActivity.class);
             intent.putExtra("sysadminEntity", sysadminEntity);
@@ -90,21 +78,16 @@ public class SysadminlistAdapter extends RecyclerView.Adapter<SysadminlistAdapte
 
             return false;
         }
-
         @Override
         public void onClick(View view) {
 
             // to work you also have to instruct the constructor to call: itemView.setOnLongClickListener(this);
 
             SysadminEntity sysadminEntity = sysadminEntityList.get(getAdapterPosition());
-            Log.e("SA","You clicked on -> " + sysadminEntity.getWebaddress());
+            Log.e("SA", "You clicked on -> " + sysadminEntity.getWebaddress());
 
             // do nothing ...
 
         }
     }
-
-
-
-
 }

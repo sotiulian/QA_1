@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.wwp.QA.RoomDatabase.LoginnamelistActivity;
 import com.wwp.QA.RoomDatabase.SysadminActivity;
+import com.wwp.QA.Utils.AppUpdater;
 
 // What to learn to become Android developer
 // https://androidrepo.com/repo/skydoves-android-developer-roadmap-android-jetpack-compose
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AppUpdater.checkForUpdate(this);
 
         findViewById(R.id.button_sysadmin).setOnClickListener(new View.OnClickListener() {
             @Override
