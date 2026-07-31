@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">QA - Controlador de Processo v0.03</string>
     <string name="companyname">I-Team</string>
     <string name="companydescription">Empresa de desenvolvimento de soluções Factory 5.0</string>
     <string name="add_proc_controller_on_tablet">Adicionar controlador de processo ao tablet</string>

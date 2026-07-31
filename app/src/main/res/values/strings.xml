@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">QA - Process Controller v0.03</string>
     <string name="companyname">I-Team</string>
     <string name="companydescription">Factory 5.0 solution development Company</string>
     <string name="add_proc_controller_on_tablet">Add Proc. controller on tablet</string>
