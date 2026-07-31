@@ -39,6 +39,20 @@ android {
 
 }
 
+// CameraX (camera-lifecycle/camera-view) aduce tranzitiv androidx.lifecycle 2.5.1, care aduce
+// kotlinx-coroutines-android:1.6.1, care la randul lui cere kotlin-stdlib-jdk7/jdk8:1.6.0 - versiuni
+// vechi care inca includ propriile clase (nu doar redirectioneaza spre kotlin-stdlib, cum fac
+// versiunile 1.8.x). kotlin-stdlib insusi e rezolvat la 1.8.22 (cerut de alte librarii), deci
+// clasele din kotlin-stdlib-jdk7/jdk8:1.6.0 ajung duplicate fata de cele deja incluse in
+// kotlin-stdlib:1.8.22 -> "Duplicate class ... found in modules kotlin-stdlib-1.8.22.jar and
+// kotlin-stdlib-jdk7/jdk8-1.6.0.jar". Fortam aceeasi versiune peste tot.
+configurations.all {
+    resolutionStrategy {
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+    }
+}
+
 dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
